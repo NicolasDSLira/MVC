@@ -1,0 +1,22 @@
+{
+    "name": "nicolas/login_mvc",
+    "autoload": {
+        "psr-4": {
+            "Nicolas\\LoginMvc\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nicolas Lira",
+            "email": "nicolasdslira@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/"
+        }
+    },
+    "require": {
+        "twig/twig": "^1.42"
+    }
+}

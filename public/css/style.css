@@ -1,0 +1,51 @@
+:root{
+	--main-bg-color: aliceblue;
+}
+.max-width{
+	max-width: 1024px;
+	width: 100%;
+}
+
+.center-screen{
+	margin: 0 auto;
+}
+
+.paddingt{
+	padding: 10px;
+}
+
+
+body{
+	background-color: var(--main-bg-color);
+}
+
+.navbar-nav{
+	margin: 0 auto;
+}
+
+.form-margin{
+	margin-top: 10%;
+}
+
+.bg-gray{
+	background-color: lightgrey;
+}
+
+.slidebar-perso{
+	width: 20%;
+	height: 100vh;
+	position: fixed;
+	display: inline;
+	z-index: 100%;
+}
+
+
+.conteudo-dash{
+	width: 80%;
+	padding: 20px;
+	display: inline-block;
+	margin-left: 20%;
+}
+
+
+
