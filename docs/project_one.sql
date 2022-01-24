@@ -20,31 +20,42 @@ SET time_zone = "+00:00";
 -- Database: `project_one`
 --
 
-CREATE DATABASE `project_one`;
+CREATE DATABASE project_one DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `table_one`
+-- usar databese: `project_one`
 --
 
-CREATE TABLE `table_one` (
-  `id_table` int(11) NOT NULL,
-  `name_table` varchar(50) NOT NULL,
-  `col_table` text NOT NULL,
-  `pass_table` char(20) NOT NULL
+USE project_one;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `machine`
+--
+
+CREATE TABLE `machine` (
+  `id` int(11) PRIMARY KEY  AUTO_INCREMENT NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `description` text NOT NULL,
+  `urlImg` text NOT NULL,
+  `UserId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `table_two`
+-- Estrutura da tabela `perifericos`
 --
 
-CREATE TABLE `table_two` (
-  `id_table` int(11) NOT NULL,
-  `name_table` varchar(50) NOT NULL,
-  `col` int(11) NOT NULL
+CREATE TABLE `perifericos` (
+  `id` int(11) PRIMARY KEY  AUTO_INCREMENT NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `description` text NOT NULL,
+  `urlImg` text NOT NULL,
+  `MachineId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -54,56 +65,44 @@ CREATE TABLE `table_two` (
 --
 
 CREATE TABLE `user_table` (
-  `idUser` int(11) NOT NULL,
+  `idUser` int(11) PRIMARY KEY  AUTO_INCREMENT NOT NULL,
   `nameUser` varchar(80) DEFAULT NULL,
   `emailUser` varchar(80) NOT NULL,
   `passUser` char(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+
 --
--- Extraindo dados da tabela `user_table`
+-- FK_KEY for table `machine`
 --
+
+ALTER TABLE machine ADD CONSTRAINT FK_machine_3
+    FOREIGN KEY (UserId)
+    REFERENCES user_table (idUser);
+
+--
+-- FK_KEY for table `periférico`
+--
+
+ALTER TABLE perifericos ADD CONSTRAINT FK_perifericos_3
+    FOREIGN KEY (MachineId)
+    REFERENCES machine (id);
+
+-- --------------------------------------------------------
+
+
+-- 
+-- Adicionado dados teste
+-- 
 
 INSERT INTO `user_table` (`idUser`, `nameUser`, `emailUser`, `passUser`) VALUES
 (1, 'root', 'root@admin.io', '147369'),
 (2, 'admin', 'admin@admin.io', '369147852');
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `table_one`
---
-ALTER TABLE `table_one`
-  ADD PRIMARY KEY (`id_table`);
-
---
--- Indexes for table `table_two`
---
-ALTER TABLE `table_two`
-  ADD PRIMARY KEY (`id_table`);
-
---
--- Indexes for table `user_table`
---
-ALTER TABLE `user_table`
-  ADD PRIMARY KEY (`idUser`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `table_one`
---
-ALTER TABLE `table_one`
-  MODIFY `id_table` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `user_table`
---
-ALTER TABLE `user_table`
-  MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+

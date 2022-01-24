@@ -56,23 +56,20 @@ class UserController extends Controller
 				$_SESSION['idUser'] = $this->idGet;
 				$_SESSION['emailUser'] = $this->emailGet;
 				$_SESSION['pass_user'] = $this->passGet;
-				redirect(BASE.'hahadabduahd');
+				redirect(BASE.'loading/machine');
 			}
 		}
 
 		 redirect(BASE.'login/f');
 	}
 
-	public function delete()
-	{
-		
-	}
+
 
 	public function update()
 	{
 		$this->idGet = $_SESSION['idUser'];
 
-		$vq = $this->UserModel->update($this->postInput());
+		$vq = $this->UserModel->update($this->updateInput());
 
 		// verifica se foi o update
 
@@ -100,7 +97,7 @@ class UserController extends Controller
 		exit;
 	}
 
-	private function postInput(){
+	private function updateInput(){
 		return (object)[
 			'id'    =>  $_SESSION['idUser'],
 			'nome'  =>  Input::post('updateName'),

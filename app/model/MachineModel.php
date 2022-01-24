@@ -20,6 +20,9 @@ class MachineModel
     private $URLImg;
     private $USERId;
 
+    // List machine
+    private $ListaMachine;
+
     /**
      * Método construtor
      *
@@ -38,14 +41,18 @@ class MachineModel
      */
     public function insert($params)
     {
-        $sql = 'INSERT INTO machine (`id`, `name`, `description`, `urlImg`, `UserId`) VALUES (:id ,:nome , :description , :urlImg , :IdUser)';
+        $sql = 'INSERT INTO machine (`id`, `name`, `description`, `urlImg`, `UserId`) VALUES (NULL ,:nome , :description , :urlImg , :IdUser)';
 
+        $param = [
+            ':nome'        => $params->nomeMachine,
+            ':description' => $params->descript,
+            ':urlImg'      => $params->URLImage,
+            ':IdUser'      => $params->IDUser
+        ];
 
-        dd($this->pdo->executeNonQuery($sql, $params));
-
-        if (!$this->pdo->executeNonQuery($sql, $params)){return -1; }
+        if (!$this->pdo->executeNonQuery($sql, $param)){return -1; }
             		
-        return $this->pdo->end();
+        return true;
     }
 
     /**
@@ -56,16 +63,34 @@ class MachineModel
      */
     public function update($params)
     {
-        $sql = 'UPDATE user_table SET nameUser = :nome, emailUser = :email, passUser = :pass WHERE idUser = :id';
+        $sql = 'UPDATE machine SET name = :nome, description = :descr, urlImg = :urlImg, UserId = :UserId WHERE UserId = :id';
 
         $params = [
             ':id'    => $params->id,
-            ':nome'  => $params->nameUser,
-            ':email' => $params->emailUser,
-            ':pass'  => $params->passUser
+            ':nome'  => $params->name,
+            ':descr' => $params->descr,
+            ':urlImg'  => $params->urlImg,
+            ':UserId'  => $params->UserId
         ];
 
         return $this->pdo->executeNonQuery($sql, $params);
+    }
+
+     /**
+     * Deleta id escolhido
+     *
+     * @return int
+     */
+
+    public function delete($params)
+    {
+        $sql = 'DELETE FROM machine WHERE id = :id';
+
+        $param = [
+            ':id' => $params
+        ];
+
+        return $this->pdo->executeNonQuery($sql, $param);
     }
 
     /**
@@ -81,16 +106,13 @@ class MachineModel
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
         $dt = $this->pdo->executeQuery($sql);
 
-        //Declara uma lista inicialmente nula
-        $ListaMachine;
-
         //Percorremos todas as linhas do resultado da busca
         foreach ($dt as $dr)
             //Atribuimos a última posição do array o produto devidamente tratado
-            $ListaMachine[] = $this->collection($dr);
+            $this->ListaMachine[] = $this->collection($dr);
 
         //Retornamos a lista de produtos
-        return $ListaMachine;
+        return $this->ListaMachine;
     }
 
     /**
@@ -101,21 +123,29 @@ class MachineModel
     public function getUserId($id)
     {
         //Excrevemos a consulta SQL e atribuimos a váriavel $sql
-        $sql = 'SELECT * FROM machine WHERE UserId = '.$id;
+        $sql = 'SELECT * FROM machine WHERE UserId = :id';
+
+        // parametros
+
+        $param = [
+            ':id' => $id
+        ];
 
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
-        $dt = $this->pdo->executeQuery($sql);
+        $dt = $this->pdo->executeQuery($sql, $param);
 
-        //Declara uma lista inicialmente nula
-        $ListaUser;
+        if(!$dt)
+            return null;
+
 
         //Percorremos todas as linhas do resultado da busca
         foreach ($dt as $dr)
+
             //Atribuimos a última posição do array o produto devidamente tratado
-            $ListMachine[] = $this->collection($dr);
+            $this->ListaMachine[] = $this->collection($dr);
 
         //Retornamos a lista de produtos
-        return $ListMachine;
+        return $this->ListaMachine;
     }
 
     /**
@@ -138,20 +168,6 @@ class MachineModel
         return $this->collection($dr);
     }
 
-    //Pesquisa por email
-
-    public function getByEmail($emailUser)
-    {
-        $sql = "SELECT * FROM user_table WHERE emailUser = '$emailUser'";
-
-        $param = [
-            ':email' => $emailUser,
-        ];
-
-        $dr = $this->pdo->executeQueryOneRow($sql, $param);
-
-        return $this->collection($dr);
-    }
 
     /**
      * Converte uma estrutura de array vinda da base de dados em um objeto devidamente tratado

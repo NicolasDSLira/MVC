@@ -31,24 +31,19 @@ class MachineController extends Controller
 		if ($session == "not")
 			redirect(BASE);
 
-		$valueNull = "Sem registros";
 
 		$this->idUserGet = $_SESSION['idUser'];	
 
 		if($this->idUserGet == null)
-				return $valueNull;
+				return NULL;
 		
 
 		$array = $this->MachineModel->getUserId($this->idUserGet);
-
-
-		if (!$array[0]['nome'])
-			return $valueNull;
 		
 
 		$_SESSION['MachineArray'] = $array;
 
-		redirect(BASE.'dashboard');
+		redirect(BASE.'loading/periferico');
 	
 		
 	}
@@ -61,6 +56,36 @@ class MachineController extends Controller
 		$this->idUserGet =  $_SESSION['idUser'];
 
 		$add = $this->MachineModel->insert($this->getInput());
+
+		if($add == 1)
+			redirect(BASE.'loading/machine');
+
+	}
+
+	/*
+	*
+	** delete periférico
+	*
+	*/
+
+	public function delete()
+	{
+
+		$session = $_SESSION['nameUser'];
+		if ($session == "not")
+			redirect(BASE);
+
+		$uri = $_SERVER['REQUEST_URI'];
+
+		if(strpos($uri, '?'))
+			$uri = explode('?', $uri);
+
+			$id = $uri[1];
+
+		$del = $this->MachineModel->delete($id);
+
+		if($del == 1)
+			redirect(BASE.'loading/machine');
 
 	}
 

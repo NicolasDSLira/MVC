@@ -19,21 +19,21 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <a href="{{BASE}}dashboard/#" class="nav-link active" aria-current="page">
+        <a href="{{BASE}}dashboard/#" class="nav-link active" aria-current="page" id="slidebar-home">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="{{BASE}}dashboard#"/></svg>
           Casa
         </a>
       </li>
       <li>
-        <a href="#machine" class="nav-link text-white">
+        <a href="{{BASE}}dashboard#machine" class="nav-link text-white"  id="slidebar-machine">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="{{BASE}}dashboard/#machine"/></svg>
           Máquinas
         </a>
       </li>
       <li>
-        <a href="#product" class="nav-link text-white">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="{{BASE}}dashboard/#product"/></svg>
-          Produtos
+        <a href="{{BASE}}dashboard#product" class="nav-link text-white"  id="slidebar-periferico">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="{{BASE}}dashboard/#periferico"/></svg>
+          Periférico
         </a>
       </li>
     </ul>
@@ -44,7 +44,7 @@
         <strong>{{ session.nameUser }}</strong>
       </a>
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-        <li><a class="dropdown-item" href="{{BASE}}dashboard/cadastraProductr">Novo produto...</a></li>
+        <li><a class="dropdown-item" href="{{BASE}}dashboard/cadastraPeriferico">Novo periférico ...</a></li>
         <li><a class="dropdown-item" href="{{BASE}}dashboard/cadastrarMachine">Nova Máquina...</a></li>
         <li><a class="dropdown-item" href="{{BASE}}dashboard/profile">Perfil</a></li>
         <li><hr class="dropdown-divider"></li>

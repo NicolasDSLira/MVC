@@ -7,7 +7,7 @@ require_once '../app/core/Model.php';
 use app\core\Model;
 
 
-class UserModel
+class PerifericoModel
 {
 
     //Instância da classe model
@@ -31,17 +31,19 @@ class UserModel
      */
     public function insert(object $params)
     {
-        $sql = 'INSERT INTO user_table (`name_user`, `emailUser`, `passUser`) VALUES (:nome, :email, :pass)';
 
-        $params = [
-            ':nome'  => $params->nameUser,
-            ':email' => $params->emailUser,
-            ':pass'  => $params->passUser
+        $sql = 'INSERT INTO perifericos (`id`, `name`, `description`, `urlImg`, `MachineId`) VALUES (NULL, :nome, :descricao, :URLImg, :IDMAchine)';
+
+        $param = [
+            ':nome'       => $params->nome,
+            ':descricao'  => $params->descricao,
+            ':URLImg'     => $params->URLImg,
+            ':IDMAchine'  => $params->IDMachine
         ];
 
-        if (!$this->pdo->executeNonQuery($sql, $params)){return -1; }
+        if (!$this->pdo->executeNonQuery($sql, $param)){return -1; }
             		
-        return $this->pdo->end();
+        return true;
     }
 
     /**
@@ -52,16 +54,36 @@ class UserModel
      */
     public function update($params)
     {
-        $sql = 'UPDATE user_table SET nameUser = :nome, emailUser = :email, passUser = :pass WHERE idUser = :id';
+        $sql = 'UPDATE perifericos 
+            SET name = :nome, description = :descricao, urlImg = :URLImg, MachineId = :IDMAchine 
+            WHERE id = :id';
 
-        $params = [
-            ':id'    => $params->id,
-            ':nome'  => $params->nome,
-            ':email' => $params->email,
-            ':pass'  => $params->senha
+        $param = [
+            ':id'         => $params->id,
+            ':nome'       => $params->nome,
+            ':descricao'  => $params->descricao,
+            ':URLImg'     => $params->URLImg,
+            ':IDMAchine'  => $params->IDMachine
         ];
 
-        return $this->pdo->executeNonQuery($sql, $params);
+        return $this->pdo->executeNonQuery($sql, $param);
+    }
+
+    /**
+     * Deleta id escolhido
+     *
+     * @return int
+     */
+
+    public function delete($params)
+    {
+        $sql = 'DELETE FROM perifericos WHERE id = :id';
+
+        $param = [
+            ':id' => $params
+        ];
+
+        return $this->pdo->executeNonQuery($sql, $param);
     }
 
     /**
@@ -72,21 +94,21 @@ class UserModel
     public function getAll()
     {
         //Excrevemos a consulta SQL e atribuimos a váriavel $sql
-        $sql = 'SELECT * FROM user_table ORDER BY idUser ASC';
+        $sql = 'SELECT * FROM perifericos ORDER BY id ASC';
 
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
         $dt = $this->pdo->executeQuery($sql);
 
         //Declara uma lista inicialmente nula
-        $ListaUser;
+        $ListaPeriferico;
 
         //Percorremos todas as linhas do resultado da busca
         foreach ($dt as $dr)
             //Atribuimos a última posição do array o produto devidamente tratado
-            $ListaUser[] = $this->collection($dr);
+            $ListaPeriferico[] = $this->collection($dr);
 
         //Retornamos a lista de produtos
-        return $ListaUser;
+        return $ListaPeriferico;
     }
 
     /**
@@ -97,34 +119,30 @@ class UserModel
      */
     public function getById( $id)
     {
-        $sql = 'SELECT emailUser, passUser, nameUser FROM user_table WHERE idUser = :id';
+        $sql = 'SELECT * FROM perifericos WHERE idUser = :id';
 
         $param = [
             ':id' => $idUser
         ];
 
-        $dr = $this->pdo->executeQueryOneRow($sql, $param);
-
-        return $this->collection($dr); 
-    }
-
-
-    //Pesquisa por email
-
-    public function getByEmail($emailUser)
-    {
-        $sql = "SELECT * FROM user_table WHERE emailUser = '$emailUser'";
-
-        $param = [
-            ':email' => $emailUser,
-        ];
-
-        $dr = $this->pdo->executeQueryOneRow($sql, $param);
+        $dr = $this->pdo->executeNonQuery($sql, $param);
 
         return $this->collection($dr);
     }
 
+    //Pesquisa por email
 
+    public function getMachineId($idMachine)
+    {
+        $sql = "SELECT * FROM perifericos WHERE MachineId = :idMachine";
+
+        $param = [
+            ':idMachine' => $idMachine
+        ];
+
+        return $dr = $this->pdo->executeQuery($sql, $param);
+
+    }
 
     /**
      * Converte uma estrutura de array vinda da base de dados em um objeto devidamente tratado
@@ -132,13 +150,16 @@ class UserModel
      * @param  array|object $param Revebe o parâmetro que é retornado na consulta com a base de dados
      * @return object Retorna um objeto devidamente tratado com a estrutura de produtos
      */
+
     private function collection($param)
     {
+
         return [
-            'id'       => $param['idUser']   ,
-            'nome'     => $param['nameUser'] ,
-            'email'    => $param['emailUser'],
-            'pass'     => $param['passUser'] 
+            'id'         => $param['id'],
+            'nome'       => $param['name'],
+            'descricao'  => $param['description'],
+            'URLImg'     => $param['urlImg'],
+            'IDMAchine'  => $param['MachineId']
         ];
     }
 }

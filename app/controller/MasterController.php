@@ -65,8 +65,20 @@ class MasterController extends Controller
 
 
 	public function createMachine(){
+		if (!$_SESSION['nameUser'])
+			redirect(BASE);
+
 		$this->load('dashboard/machine/create', [
-			'Page' => 'dashboard'
+			'Page' => 'Create Machine'
+		]);
+	}
+
+	public function createPer(){
+		if (!$_SESSION['nameUser'])
+			redirect(BASE);
+
+		$this->load('dashboard/periferico/create', [
+			'Page' => 'Create Machine'
 		]);
 	}
 

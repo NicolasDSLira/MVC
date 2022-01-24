@@ -134,7 +134,7 @@ class Model
      * @param array $params the array of parameters (array(":col1" => "val1",":col2" => "val2"))
      * @return array for the result of query
      */
-    public function executeQuery($sql, $params)
+    public function executeQuery($sql, $params )
     {
         try {
             $stmt = $this->getConnection()->prepare($sql);
@@ -153,6 +153,7 @@ class Model
             return null;
         }
     }
+
 
     /**
      * returns if the query was successful
